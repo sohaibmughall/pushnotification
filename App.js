@@ -4,32 +4,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './src/screens/signin/login';
 import Home from './src/screens/Home/Home';
-import { Avatar } from 'react-native-elements';
+import { Avatar, Image } from 'react-native-elements';
+import Signup from './src/screens/signin/signup';
+import TabNavigation from './src/config/TabNavigation';
+import StackNavigation from './src/config/StackNavigation';
+import Navigation from './src/config/Navigation';
 
 const Stack = createNativeStackNavigator();
 
 
-const App = () => {
+const App = ({ navigation }) => {
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
-        <Stack.Screen name="Home" component={Home} options={{
-          headerTitle: props => <Avatar
-            size={34}
-            // rounded
-            containerStyle={{ backgroundColor: '#00a7f7' }}
-          />,
-          headerRight: () => (
-            <Button
-              onPress={() => alert('This is a button!')}
-              title="Info"
-              color="#fff"
-            />
-          ),
-        }}></Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <Navigation />
+
+
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ import { Button } from 'react-native-elements'
 
 
 
-function Login({ navigation }) {
+function Signup({ navigation }) {
     const [text, settext] = useState("");
     const [loading, setloading] = useState(false);
 
@@ -20,18 +20,28 @@ function Login({ navigation }) {
     return (
         <>
             <View style={styles.container}>
-                <Text style={styles.heading}> Sign In </Text>
-                <Text style={styles.heading2}> Plz sign in to your account </Text>
+                <Text style={styles.heading}> Registor Your Self  </Text>
+                <Text style={styles.heading2}> Insert Blow Details </Text>
             </View>
             <View style={styles.inputcontainer}>
                 <TextInput
                     style={styles.input}
-                    placeholder="User Name"
+                    placeholder="First Name"
                     defaultValue={text}
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder="Useless placeholder"
+                    placeholder="Last Name"
+                    keyboardType="numeric"
+                />
+                 <TextInput
+                    style={styles.input}
+                    placeholder="E-mail"
+                    keyboardType="numeric"
+                />
+                 <TextInput
+                    style={styles.input}
+                    placeholder="Password"
                     keyboardType="numeric"
                 />
             </View>
@@ -39,7 +49,7 @@ function Login({ navigation }) {
             <View style={styles.button} >
 
                 <Button
-                    title="Log in"
+                    title="Registor"
                     loading={loading}
                     loadingProps={{ size: 'small', color: 'white' }}
                     buttonStyle={{
@@ -57,7 +67,7 @@ function Login({ navigation }) {
                 />
 
             </View>
-            <Text style={{ padding: 10 }}> NO account First Registor <Text style={{ color: "red", }} onPress={() => navigation.navigate("Signup")}>Sign Up </Text>?</Text>
+            <Text style={{ padding: 10 }}> Already Acoount plz <Text style={{ color: "red", }} onPress={() => navigation.navigate("Login")}> Login </Text>?</Text>
 
         </>
     );
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
     inputcontainer: {
         // backgroundColor:"red",
         padding: 20,
-        height: 200,
+        height: 300,
         justifyContent: "center"
     },
     button: {
@@ -102,4 +112,4 @@ const styles = StyleSheet.create({
 
 
 })
-export default Login;
+export default Signup;
