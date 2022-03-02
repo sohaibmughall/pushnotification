@@ -1,20 +1,22 @@
 //import liraries
 import React, { Component, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ImageBackground,  } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ImageBackground, } from 'react-native';
 import { Avatar, Image, Button, ButtonGroup } from 'react-native-elements'
 import { Hs1 } from '../../assets/colors/colors';
 import Cards from '../../components/Cards';
 import { Counter } from './../../features/counter/counter';
-import {ProgressBar} from '@react-native-community/progress-bar-android';
+import { ProgressBar } from '@react-native-community/progress-bar-android';
 
 // create a component
 const Home = ({ route }) => {
     const [cards, setcards] = useState([]);
     const [pagecount, setpagecount] = useState(1)
+    const [progress, setprogress] = useState(false)
 
     const { data } = route.params
     // use effect function --------------------------------------------------------------
     useEffect(() => {
+
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${data.Token}`);
 
@@ -26,11 +28,23 @@ const Home = ({ route }) => {
 
         fetch(`http://restapi.adequateshop.com/api/Tourist?page=${pagecount}`, requestOptions)
             .then(response => response.json())
-            .then(result => setcards(result))
+            .then(result => {
+                setcards(result)
+                setTimeout(() => {
+                    setprogress(false)
+                }, 100000);
+            })
             .catch(error => console.log('error', error));
-    }, [route.params, cards])
+    }, [route.params, cards, progress])
     return (
         <>
+            {
+                progress ? <ProgressBar
+                    styleAttr="Horizontal"
+                    indeterminate={progress}
+                    progress={1}
+                /> : null
+            }
             <ImageBackground
                 source={require('../../assets/images/app-bg.png')}
                 style={{ width: "100%", height: 180, justifyContent: "center" }}
@@ -49,12 +63,7 @@ const Home = ({ route }) => {
                 </View>
             </ImageBackground>
             <View style={styles.line}></View>
-            <ScrollView onScrollEndDrag={() => setpagecount(pagecount + 1)} >
-                <ProgressBar
-                    styleAttr="Horizontal"
-                    indeterminate={false}
-                    progress={0.5}
-                />
+            <ScrollView onScrollEndDrag={() => { setpagecount(pagecount + 1), setprogress(true) }} >
                 <Cards data={cards} />
                 {/* <Counter /> */}
 
