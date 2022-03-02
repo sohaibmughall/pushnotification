@@ -1,18 +1,34 @@
 //import liraries
 import React, { Component, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, ImageBackground } from 'react-native';
-import { Avatar, Image } from 'react-native-elements'
+import { View, Text, StyleSheet, ScrollView, ImageBackground,  } from 'react-native';
+import { Avatar, Image, Button, ButtonGroup } from 'react-native-elements'
+import { Hs1 } from '../../assets/colors/colors';
 import Cards from '../../components/Cards';
+import { Counter } from './../../features/counter/counter';
+import {ProgressBar} from '@react-native-community/progress-bar-android';
 
 // create a component
 const Home = ({ route }) => {
-    const [user, setuser] = useState([]);
+    const [cards, setcards] = useState([]);
+    const [pagecount, setpagecount] = useState(1)
 
-    const {data} = route.params
+    const { data } = route.params
     // use effect function --------------------------------------------------------------
     useEffect(() => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${data.Token}`);
 
-    }, [route.params])
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch(`http://restapi.adequateshop.com/api/Tourist?page=${pagecount}`, requestOptions)
+            .then(response => response.json())
+            .then(result => setcards(result))
+            .catch(error => console.log('error', error));
+    }, [route.params, cards])
     return (
         <>
             <ImageBackground
@@ -27,16 +43,22 @@ const Home = ({ route }) => {
                         containerStyle={{ backgroundColor: '#00a7f7' }}
                     />
                     <View>
-                        <Text>{data.Token}</Text>
-                        <Text> Software Eng.</Text>
+                        <Text style={Hs1}> {data.Name}</Text>
+                        <Text style={Hs1}> {data.Email}</Text>
                     </View>
                 </View>
             </ImageBackground>
             <View style={styles.line}></View>
-            <ScrollView>
-                <Cards></Cards>
+            <ScrollView onScrollEndDrag={() => setpagecount(pagecount + 1)} >
+                <ProgressBar
+                    styleAttr="Horizontal"
+                    indeterminate={false}
+                    progress={0.5}
+                />
+                <Cards data={cards} />
+                {/* <Counter /> */}
 
-
+                {/* <Button onPress={() => setpagecount(pagecount + 1)} title={"Load more"} /> */}
             </ScrollView>
 
         </>

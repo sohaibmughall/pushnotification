@@ -9,6 +9,8 @@ import Signup from './src/screens/signin/signup';
 import TabNavigation from './src/config/TabNavigation';
 import StackNavigation from './src/config/StackNavigation';
 import Navigation from './src/config/Navigation';
+import store from './src/app/store'
+import { Provider } from 'react-redux'
 
 const Stack = createNativeStackNavigator();
 
@@ -16,12 +18,9 @@ const Stack = createNativeStackNavigator();
 const App = ({ navigation }) => {
 
   return (
-    <>
-    
+    <Provider store={store}>
       <Navigation />
-
-
-    </>
+    </Provider>
   );
 };
 

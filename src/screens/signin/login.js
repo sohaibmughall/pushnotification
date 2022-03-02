@@ -16,7 +16,7 @@ function Login({ }) {
 
     const movingscreen = () => {
         setloading(true)
-        
+
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -35,13 +35,10 @@ function Login({ }) {
         fetch("http://restapi.adequateshop.com/api/authaccount/login", requestOptions)
             .then(response => response.json())
             .then(result => {
-                const { signIn } = React.useContext(AuthContext);
-                setUser(result)
-                // signIn(result.data)
                 navigation.navigate("Home", result)
                 setloading(false)
             })
-            .catch(error => alert('error', error), setloading(false));
+            .catch(error => console.log('error', error), setloading(false));
 
 
     }
