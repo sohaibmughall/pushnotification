@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { Component, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements'
@@ -5,16 +6,44 @@ import { Button } from 'react-native-elements'
 
 
 
-function Login({ navigation }) {
+
+function Login({ }) {
     const [text, settext] = useState("");
     const [loading, setloading] = useState(false);
+    const [User, setUser] = useState({});
+
+    const navigation = useNavigation()
 
     const movingscreen = () => {
         setloading(true)
-        setTimeout(() => {
-            setloading(false)
-            navigation.navigate("Home")
-        }, 3000);
+        
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "email": "sohaib@gmail.com",
+            "password": 123456
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("http://restapi.adequateshop.com/api/authaccount/login", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                const { signIn } = React.useContext(AuthContext);
+                setUser(result)
+                // signIn(result.data)
+                navigation.navigate("Home", result)
+                setloading(false)
+            })
+            .catch(error => alert('error', error), setloading(false));
+
+
     }
 
     return (
@@ -65,7 +94,7 @@ function Login({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop:70,
+        marginTop: 70,
         width: "100%",
         padding: 20,
         borderRadius: 10,

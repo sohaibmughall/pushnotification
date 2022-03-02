@@ -1,11 +1,18 @@
 //import liraries
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground } from 'react-native';
 import { Avatar, Image } from 'react-native-elements'
 import Cards from '../../components/Cards';
 
 // create a component
-const Home = () => {
+const Home = ({ route }) => {
+    const [user, setuser] = useState([]);
+
+    const {data} = route.params
+    // use effect function --------------------------------------------------------------
+    useEffect(() => {
+
+    }, [route.params])
     return (
         <>
             <ImageBackground
@@ -20,18 +27,18 @@ const Home = () => {
                         containerStyle={{ backgroundColor: '#00a7f7' }}
                     />
                     <View>
-                        <Text> Sohaib Ahmed</Text>
+                        <Text>{data.Token}</Text>
                         <Text> Software Eng.</Text>
                     </View>
                 </View>
             </ImageBackground>
             <View style={styles.line}></View>
             <ScrollView>
-                    <Cards></Cards>
-               
+                <Cards></Cards>
+
 
             </ScrollView>
-    
+
         </>
 
     );
