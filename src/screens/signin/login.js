@@ -2,18 +2,18 @@ import { useNavigation } from '@react-navigation/native';
 import React, { Component, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-elements'
+import { useDispatch, useSelector } from 'react-redux';
+import { user } from '../../features/user/userslice';
 
 
 
 
 
-function Login({ }) {
+function Login({navigation }) {
     const [text, settext] = useState("");
     const [loading, setloading] = useState(false);
     const [User, setUser] = useState({});
-
-    const navigation = useNavigation()
-
+    const dispatch = useDispatch()
     const movingscreen = () => {
         setloading(true)
 
@@ -35,7 +35,8 @@ function Login({ }) {
         fetch("http://restapi.adequateshop.com/api/authaccount/login", requestOptions)
             .then(response => response.json())
             .then(result => {
-                navigation.navigate("Home", result)
+                dispatch(user(result.data))
+                navigation.navigate("Home")
                 setloading(false)
             })
             .catch(error => console.log('error', error), setloading(false));

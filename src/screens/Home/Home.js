@@ -6,20 +6,20 @@ import { Hs1 } from '../../assets/colors/colors';
 import Cards from '../../components/Cards';
 import { Counter } from './../../features/counter/counter';
 import { ProgressBar } from '@react-native-community/progress-bar-android';
+import { useSelector } from 'react-redux';
 
 // create a component
 const Home = ({ route }) => {
     const [cards, setcards] = useState([]);
     const [pagecount, setpagecount] = useState(1)
     const [progress, setprogress] = useState(false)
+    
 
-    const { data } = route.params
     // use effect function --------------------------------------------------------------
+    const { user } = useSelector(state => state.user)
     useEffect(() => {
-
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", `Bearer ${data.Token}`);
-
+        myHeaders.append("Authorization", `Bearer ${user.payload.Token}`);
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
@@ -30,12 +30,11 @@ const Home = ({ route }) => {
             .then(response => response.json())
             .then(result => {
                 setcards(result)
-                setTimeout(() => {
-                    setprogress(false)
-                }, 100000);
+                // console.log(result);
+                setprogress(false)
             })
             .catch(error => console.log('error', error));
-    }, [route.params, cards, progress])
+    }, [progress])
     return (
         <>
             {
@@ -45,11 +44,12 @@ const Home = ({ route }) => {
                     progress={1}
                 /> : null
             }
+
             <ImageBackground
                 source={require('../../assets/images/app-bg.png')}
                 style={{ width: "100%", height: 180, justifyContent: "center" }}
             >
-                <View style={styles.header}>
+                <View style={styles.header} onMagicTap >
                     <Avatar
                         size={100}
                         rounded
@@ -57,8 +57,8 @@ const Home = ({ route }) => {
                         containerStyle={{ backgroundColor: '#00a7f7' }}
                     />
                     <View>
-                        <Text style={Hs1}> {data.Name}</Text>
-                        <Text style={Hs1}> {data.Email}</Text>
+                        <Text style={Hs1}> {user.payload.Name}</Text>
+                        <Text style={Hs1}> {user.payload.Email}</Text>
                     </View>
                 </View>
             </ImageBackground>

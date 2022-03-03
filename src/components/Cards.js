@@ -9,6 +9,7 @@ const Cards = ({ data }) => {
                 <View style={styles.container}>
                     {data.data.map(item => {
                         return (
+                            
                             <View style={styles.card}>
                                 <Image
                                     style={styles.image}
